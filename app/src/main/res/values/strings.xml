@@ -9,4 +9,9 @@
     <string name="paynow_button">PayNow</string>
     <string name="display_total_bill">display total bill</string>
     <string name="display_payment_method">display payment method</string>
+    <string name="display_discount_gst">display discount/gst</string>
+    <string name="reset">Reset</string>
+    <string name="gst">gst</string>
+    <string name="no_svs">No svs</string>
+    <string name="split">Split</string>
 </resources>

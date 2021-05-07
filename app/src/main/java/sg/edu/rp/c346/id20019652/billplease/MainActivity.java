@@ -4,19 +4,17 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.view.View;
-import android.view.View.OnClickListener;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
-import android.widget.RadioGroup;
-import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.RadioGroup;
 import android.widget.TextView;
-import android.widget.Toast;
-
 
 public class MainActivity extends AppCompatActivity {
 
     TextView resultAmt;
     TextView resultAmt2;
+    AutoCompleteTextView btnDiscount;
 
     Button btnCalculate;
     Button btnSvs;
@@ -25,51 +23,100 @@ public class MainActivity extends AppCompatActivity {
 
     EditText inputAmt;
     EditText inputPax;
-    EditText inputDiscount;
 
-    //RadioGroup rgPayment;
+    RadioGroup rgPayMethod;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //tvResult = findViewById(R.id.textViewTotBill);
-        //tvResult2 = findViewById(R.id.textViewPayment);
+        resultAmt = findViewById(R.id.textViewTotBill);
+        resultAmt2 = findViewById(R.id.textViewPayment);
+
+        //initialize EditTexts
+        String amt = inputAmt.getText().toString();
+        String pax = inputPax.getText().toString();
+        String disc = btnDiscount.getText().toString();
+
+        //initialize widgets
+        inputAmt = findViewById(R.id.editTextAmount);
+        inputPax = findViewById(R.id.editTextPaxNo);
+        btnDiscount = findViewById(R.id.autoCompleteTextView);
+
+        int tot = Integer.parseInt(amt);
+        int people = Integer.parseInt(pax);
+        int discount = Integer.parseInt(disc);
 
         //initialize buttons
         btnGst = findViewById(R.id.buttonGST);
         btnSvs = findViewById(R.id.buttonSVS);
         btnReset = findViewById(R.id.resetButton);
-
-        //initialize widgets
-        inputAmt = findViewById(R.id.editTextAmount);
-        inputPax = findViewById(R.id.editTextPaxNo);
-        inputDiscount = findViewById(R.id.editTextDiscount);
         btnCalculate = findViewById(R.id.splitButton);
-       // rgPayment = findViewById(R.id.buttonPayment);
+
+        rgPayMethod = findViewById(R.id.buttonPayment);
+        double result = tot * disc;
+
+        btnGst.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (btnGst.isSelected()) {
+                    result += 0.07 * result;
+                } else {
+                    result = result;
+                }
+            }
+        });
+
+        btnSvs.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (btnSvs.isSelected()) {
+
+                    result += 0.1 * result;
+                } else {
+                    result = result;
+                }
+            }
+        });
+
         btnCalculate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                String strNum1 = etResult.getText().toString();
-                String strNum2 = etResult1.getText().toString();
-                String strNum3 = etResult2.getText().toString();
+                double discounted = discount / 100;
+                result = (1 - discounted) * (tot / people);
 
-                int iNum1 = Integer.parseInt(strNum1);
-                int iNum2 = Integer.parseInt(strNum2);
-                int iNum3 = Integer.parseInt(strNum3);
-
-                if(btnResult.isChecked()) {
-                    etResult.setEnabled(true);
                 }
-                else{
-                    etResult.setEnabled(false);
-                }
+        });
 
+        btnReset.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                inputAmt.setText("");
+                inputPax.setText("");
+                btnDiscount.setText("");
             }
         });
 
+        rgPayMethod.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                    String billRes = resultAmt.getText().toString();
+                    String paymentRes = resultAmt2.getText().toString();
+                    int checkedRadioId = rgPayMethod.getCheckedRadioButtonId();
 
+                    if (checkedRadioId == R.id.radioButtonCash) {
+                        billRes = "Total Bill: $" + result;
+                        paymentRes = "Each Pays: $" + result + "in cash";
+                    }
+                    else{
+                        billRes = "Total Bill: $" + result;
+                        paymentRes = "Each Pays: $" + result + " via PayNow to 912345678";
+                    }
+                    resultAmt.setText(billRes);
+                    resultAmt2.setText(paymentRes);
+            }
+        });
     }
 }
