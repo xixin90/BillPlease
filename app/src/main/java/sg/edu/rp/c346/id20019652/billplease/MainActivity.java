@@ -4,53 +4,68 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.RadioGroup;
+import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
+
 
 public class MainActivity extends AppCompatActivity {
 
-    TextView tvDisplay;
-    Button btnDisplay;
-    Button btnDisplay2;
-    Button btnDisplay3;
-    Button btnDisplay4;
-    EditText etInput;
-    EditText etInput2;
-    EditText etInput3;
-    RadioGroup rgPayment;
-    Number dblNumber;
+    TextView resultAmt;
+    TextView resultAmt2;
+
+    Button btnCalculate;
+    Button btnSvs;
+    Button btnGst;
+    Button btnReset;
+
+    EditText inputAmt;
+    EditText inputPax;
+    EditText inputDiscount;
+
+    //RadioGroup rgPayment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        tvDisplay = findViewById(R.id.textViewAmount);
-        btnDisplay = findViewById(R.id.buttonGST);
-        btnDisplay2 = findViewById(R.id.buttonSVS);
-        btnDisplay3 = findViewById(R.id.splitButton);
-        btnDisplay4 = findViewById(R.id.resetButton);
-        etInput = findViewById(R.id.editTextAmount);
-        etInput2 = findViewById(R.id.editTextPaxNo);
-        etInput3 = findViewById(R.id.editTextDiscount);
-        rgPayment = findViewById(R.id.buttonPayment);
+        //tvResult = findViewById(R.id.textViewTotBill);
+        //tvResult2 = findViewById(R.id.textViewPayment);
 
-        String strNumber = "25";
-        dblNumber = Double.parseDouble(strNumber);
-        int intNumber = Integer.parseInt(strNumber);
+        //initialize buttons
+        btnGst = findViewById(R.id.buttonGST);
+        btnSvs = findViewById(R.id.buttonSVS);
+        btnReset = findViewById(R.id.resetButton);
 
-        btnDisplay.setOnClickListener(new View.OnClickListener() {
+        //initialize widgets
+        inputAmt = findViewById(R.id.editTextAmount);
+        inputPax = findViewById(R.id.editTextPaxNo);
+        inputDiscount = findViewById(R.id.editTextDiscount);
+        btnCalculate = findViewById(R.id.splitButton);
+       // rgPayment = findViewById(R.id.buttonPayment);
+        btnCalculate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dblNumber = 5;
 
-                String strResponse = etInput.getText().toString();
-                int checkedRgId = rgPayment.getCheckedRadioButtonId();
+                String strNum1 = etResult.getText().toString();
+                String strNum2 = etResult1.getText().toString();
+                String strNum3 = etResult2.getText().toString();
 
+                int iNum1 = Integer.parseInt(strNum1);
+                int iNum2 = Integer.parseInt(strNum2);
+                int iNum3 = Integer.parseInt(strNum3);
 
-                if(checkedRgId== R.id.radioButtonCash){
+                if(btnResult.isChecked()) {
+                    etResult.setEnabled(true);
+                }
+                else{
+                    etResult.setEnabled(false);
+                }
 
             }
         });
